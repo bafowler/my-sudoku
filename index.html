@@ -7,7 +7,7 @@
   <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <table>
+  <table id="soduko-box">
     <tbody>
       <tr id="a">
         <td id="a0"> </td>
@@ -113,42 +113,23 @@
 </body>
 
 <script>
-  document.getElementById("a1").innerHTML = "5";
-  document.getElementById("a4").innerHTML = "1";
-  document.getElementById("a6").innerHTML = "3";
-  document.getElementById("b1").innerHTML = "6";
-  document.getElementById("b2").innerHTML = "3";
-  document.getElementById("b3").innerHTML = "2";
-  document.getElementById("b5").innerHTML = "8";
-  document.getElementById("b8").innerHTML = "1";
-  document.getElementById("c1").innerHTML = "2";
-  document.getElementById("c3").innerHTML = "9";
-  document.getElementById("c8").innerHTML = "6";
-  document.getElementById("d2").innerHTML = "1";
-  document.getElementById("d3").innerHTML = "4";
-  document.getElementById("d4").innerHTML = "2";
-  document.getElementById("d5").innerHTML = "6";
-  document.getElementById("d7").innerHTML = "8";
-  document.getElementById("d8").innerHTML = "3";
-  document.getElementById("e0").innerHTML = "4";
-  document.getElementById("e8").innerHTML = "7";
-  document.getElementById("f0").innerHTML = "8";
-  document.getElementById("f1").innerHTML = "3";
-  document.getElementById("f3").innerHTML = "1";
-  document.getElementById("f4").innerHTML = "7";
-  document.getElementById("f5").innerHTML = "9";
-  document.getElementById("f6").innerHTML = "5";
-  document.getElementById("g0").innerHTML = "3";
-  document.getElementById("g5").innerHTML = "2";
-  document.getElementById("g7").innerHTML = "7";
-  document.getElementById("h0").innerHTML = "2";
-  document.getElementById("h3").innerHTML = "3";
-  document.getElementById("h5").innerHTML = "5";
-  document.getElementById("h6").innerHTML = "8";
-  document.getElementById("h7").innerHTML = "6";
-  document.getElementById("i2").innerHTML = "9";
-  document.getElementById("i4").innerHTML = "4";
-  document.getElementById("i7").innerHTML = "3";
+  var selectors = ["a1", "a4", "a6", "b1", "b2", "b3", "b5", "b8", "c1", "c3",
+  "c8", "d2", "d3", "d4", "d5", "d7", "d8", "e0", "e8", "f0", "f1", "f3", "f4",
+  "f5", "f6", "g0", "g5", "g7", "h0", "h3", "h5", "h6", "h7", "i2", "i4","i7"];
+  var values = [5, 1, 3, 6, 3, 2, 8, 1, 2, 9, 6, 1, 4, 2, 6, 8, 3, 4, 7, 8, 3,
+  1, 7, 9, 5, 3, 2, 7, 2, 3, 5, 8, 6, 9, 4, 3];
+
+  if (values.length != selectors.length) {
+    console.error("Game load error");
+  }
+
+  for (var i = 0; i < selectors.length; i++) {
+    var element = document.getElementById(selectors[i])
+    element.innerHTML = values[i];
+    element.classList.toggle("static");
+  }
 </script>
+
+<script src="script.js"> </script>
 
 </html>
