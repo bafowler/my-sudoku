@@ -1,0 +1,37 @@
+table {
+    font-family: monospace;
+    font-size: 16px;
+    width: 450px;
+    height: 450px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+td {
+    border: 1px solid #D5DBDB;
+    height: 50px;
+    width: 50px;
+    table-layout: fixed;
+    text-align: center;
+}
+
+#a0, #a1, #a2, #a3, #a4, #a5, #a6, #a7, #a8, #a9 {
+    border-top: 2px solid #717D7E;
+}
+
+#a0, #b0, #c0, #d0, #e0, #f0, #g0, #h0, #i0 {
+  border-left: 2px solid #717D7E;
+}
+
+#a8, #b8, #c8, #d8, #e8, #f8, #g8, #h8, #i8,
+#a2, #b2, #c2, #d2, #e2, #f2, #g2, #h2, #i2,
+#a5, #b5, #c5, #d5, #e5, #f5, #g5, #h5, #i5 {
+  border-right: 2px solid #717D7E;
+}
+
+#i0, #i1, #i2, #i3, #i4, #i5, #i6, #i7, #i8, #i9,
+#c0, #c1, #c2, #c3, #c4, #c5, #c6, #c7, #c8, #c9,
+#f0, #f1, #f2, #f3, #f4, #f5, #f6, #f7, #f8, #f9 {
+  border-bottom: 2px solid #717D7E;
+}
