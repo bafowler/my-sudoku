@@ -16,6 +16,26 @@ td {
     text-align: center;
 }
 
+input {
+    font-family: 'Sunflower', monospace;
+    font-size: 26px;
+    text-align:center;
+    background: inherit;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    cursor: default;
+    height: 100%;
+    width: 100%;
+    color: transparent;
+    text-shadow: 0 0 0 black;
+
+    &:focus {
+      outline:none;
+    }
+}
+
 #a0, #a1, #a2, #a3, #a4, #a5, #a6, #a7, #a8, #a9 {
     border-top: 2px solid #717D7E;
 }

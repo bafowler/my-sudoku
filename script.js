@@ -1,6 +1,18 @@
 const cells = document.querySelectorAll("#soduko-box td");
 var selected = null;
 
+function validateInput(current, event) {
+  if (!current.hasAttribute("readonly")) {
+    var char = String.fromCharCode(event.keyCode);
+    if(isNaN(char)) {
+      return false;
+    }
+    current.value = char;
+    return true;
+  }
+  return false;
+}
+
 function highlight(current) {
   if (current != selected) {
     current.style.backgroundColor = "#D4EFDF";
