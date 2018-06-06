@@ -4,7 +4,7 @@ var selected = null;
 function validateInput(current, event) {
   if (!current.hasAttribute("readonly")) {
     var char = String.fromCharCode(event.keyCode);
-    if(isNaN(char)) {
+    if(isNaN(char) || char == '0') {
       return false;
     }
     current.value = char;
