@@ -1,4 +1,4 @@
-table {
+#soduko-box {
     font-family: 'Sunflower', monospace;
     font-size: 26px;
     width: 450px;
@@ -30,10 +30,6 @@ input {
     width: 100%;
     color: transparent;
     text-shadow: 0 0 0 black;
-
-    &:focus {
-      outline:none;
-    }
 }
 
 .multiple {
