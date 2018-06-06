@@ -36,6 +36,13 @@ input {
     }
 }
 
+.multiple {
+    height: 40%;
+    font-size: 18px;
+    text-align: left;
+    vertical-align: top;
+}
+
 #a0, #a1, #a2, #a3, #a4, #a5, #a6, #a7, #a8, #a9 {
     border-top: 2px solid #717D7E;
 }
