@@ -3,6 +3,15 @@ const cells = document.querySelectorAll("#soduko-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
 
+// warn user before leaving page if the soduko board contains user input
+window.addEventListener("beforeunload", function (e) {
+    if (isEmpty()) {
+        return undefined;
+    }
+    e.returnValue = " ";
+    return " ";
+})
+
 // unfocus selected cell when user clicks outside of soduko board
 window.onclick = function (e) {
     if (e.target.tagName != "INPUT") {
@@ -100,18 +109,32 @@ function select(current) {
     selected.style.backgroundColor = "#A9DFBF";
 }
 
-// on user confirm, clear the soduko board of all user input
+// clear the soduko board of all user input
 function clearBoard() {
-    if (confirm("Are you sure you'd like to clear the board?")) {
-        for (var i = 0; i < cells.length; i++) {
-            if (!cells[i].classList.contains("static")) {
-                let cellInput = cells[i].querySelector("input");
-                cellInput.classList.remove("multiple");
-                cellInput.setAttribute("maxlength", 1);
-                cellInput.value = "";
-            }
+    // only proceed if the user confirms
+    if (!confirm("Are you sure you'd like to clear the board?")) {
+        return;
+    }
+
+    for (var i = 0; i < cells.length; i++) {
+        if (!cells[i].classList.contains("static")) {
+            let cellInput = cells[i].querySelector("input");
+            cellInput.classList.remove("multiple");
+            cellInput.setAttribute("maxlength", 1);
+            cellInput.value = "";
         }
     }
+}
+
+// return true if every cell is empty, false otherwise
+function isEmpty() {
+    for (var i = 0; i < cells.length; i++) {
+        if (!cells[i].classList.contains("static") &&
+        cells[i].querySelector("input").value.length > 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // add behaviours to all non-static cells
