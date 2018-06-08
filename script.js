@@ -3,6 +3,17 @@ const cells = document.querySelectorAll("#soduko-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
 
+// unfocus selected cell when user clicks outside of soduko board
+window.onclick = function (e) {
+    if (e.target.tagName != "INPUT") {
+        if (selected) {
+            selected.style.backgroundColor = "white";
+            selected.querySelector("input").blur();
+            selected = null;
+        }
+    }
+}
+
 // switch between single/multiple mode for the selected cell's input
 // using shift key
 document.body.onkeydown = function (e) {
@@ -82,7 +93,7 @@ function unhighlight(current) {
 // shade cell current a darker green (only one cell should be this color at
 // a time)
 function select(current) {
-    if (selected != null) {
+    if (selected) {
         selected.style.backgroundColor = "white";
     }
     selected = current;
