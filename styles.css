@@ -6,6 +6,7 @@
     border-spacing: 0px;
     border-collapse: collapse;
     table-layout: fixed;
+    margin-bottom: 10px;
 }
 
 td {
@@ -19,7 +20,7 @@ td {
 input {
     font-family: 'Sunflower', monospace;
     font-size: 26px;
-    text-align:center;
+    text-align: center;
     background: inherit;
     border: 0;
     padding: 0;
@@ -57,4 +58,23 @@ input {
 #c0, #c1, #c2, #c3, #c4, #c5, #c6, #c7, #c8, #c9,
 #f0, #f1, #f2, #f3, #f4, #f5, #f6, #f7, #f8, #f9 {
   border-bottom: 2px solid #717D7E;
+}
+
+#bottom-menu {
+    width: 482px;
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.bottom-button {
+    font-family: 'Sunflower', monospace;
+    font-size: 18px;
+    background: inherit;
+    border: none;
+    outline: none;
+}
+
+.bottom-button:hover {
+    text-decoration: underline;
 }

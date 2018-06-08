@@ -70,6 +70,19 @@ function select(current) {
     selected.style.backgroundColor = "#A9DFBF";
 }
 
+function clearBoard() {
+    if (confirm("Are you sure you'd like to clear the board?")) {
+        for (var i = 0; i < cells.length; i++) {
+            if (!cells[i].classList.contains("static")) {
+                let cellInput = cells[i].querySelector("input");
+                cellInput.classList.remove("multiple");
+                cellInput.setAttribute("maxlength", 1);
+                cellInput.value = "";
+            }
+        }
+    }
+}
+
 for (var i = 0; i < cells.length; i++) {
     if (!cells[i].classList.contains("static")) {
         cells[i].addEventListener('mouseover', function() { highlight(this) });
