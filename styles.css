@@ -18,10 +18,10 @@ td {
 }
 
 input {
-    font-family: 'Sunflower', monospace;
+    font-family: inherit;
+    background: inherit;
     font-size: 26px;
     text-align: center;
-    background: inherit;
     border: 0;
     padding: 0;
     margin: 0;
@@ -31,6 +31,10 @@ input {
     width: 100%;
     color: transparent;
     text-shadow: 0 0 0 black;
+}
+
+.static input {
+    color: #908a8c;
 }
 
 .multiple {
