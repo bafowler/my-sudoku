@@ -1,27 +1,27 @@
-#soduko-box {
+body {
     font-family: 'Sunflower', monospace;
+}
+
+#soduko-box {
     font-size: 26px;
     width: 450px;
     height: 450px;
     border-spacing: 0px;
     border-collapse: collapse;
     table-layout: fixed;
-    margin-bottom: 10px;
 }
 
 td {
     border: 1px solid #D5DBDB;
     height: 50px;
     width: 50px;
-    table-layout: fixed;
-    text-align: center;
 }
 
 input {
     font-family: inherit;
+    font-size: inherit;
     background: inherit;
-    font-size: 26px;
-    text-align: center;
+    text-align:center;
     border: 0;
     padding: 0;
     margin: 0;
@@ -64,6 +64,11 @@ input {
   border-bottom: 2px solid #717D7E;
 }
 
+#hint {
+    font-size: 14px;
+    cursor: default;
+}
+
 #bottom-menu {
     width: 482px;
     height: 100px;
@@ -72,7 +77,6 @@ input {
 }
 
 .bottom-button {
-    font-family: 'Sunflower', monospace;
     font-size: 18px;
     background: inherit;
     border: none;
