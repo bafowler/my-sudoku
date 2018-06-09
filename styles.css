@@ -2,7 +2,7 @@ body {
     font-family: 'Sunflower', monospace;
 }
 
-#soduko-box {
+#sudoku-box {
     font-size: 26px;
     width: 450px;
     height: 450px;

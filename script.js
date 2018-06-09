@@ -1,9 +1,9 @@
-// every cell in the soduko game, including static AND non-static
-const cells = document.querySelectorAll("#soduko-box td");
+// every cell in the sudoku game, including static AND non-static
+const cells = document.querySelectorAll("#sudoku-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
 
-// warn user before leaving page if the soduko board contains user input
+// warn user before leaving page if the sudoku board contains user input
 window.addEventListener("beforeunload", function (e) {
     if (isEmpty()) {
         return undefined;
@@ -12,7 +12,7 @@ window.addEventListener("beforeunload", function (e) {
     return " ";
 })
 
-// unfocus selected cell when user clicks outside of soduko board
+// unfocus selected cell when user clicks outside of sudoku board
 window.onclick = function (e) {
     if (e.target.tagName != "INPUT") {
         if (selected) {
@@ -109,7 +109,7 @@ function select(current) {
     selected.style.backgroundColor = "#A9DFBF";
 }
 
-// clear the soduko board of all user input
+// clear the sudoku board of all user input
 function clearBoard() {
     // only proceed if the user confirms
     if (!confirm("Are you sure you'd like to clear the board?")) {
