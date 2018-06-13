@@ -4,270 +4,270 @@
   <meta charset="utf-8">
   <title>sudoku</title>
   <link href="https://fonts.googleapis.com/css?family=Sunflower:300" rel="stylesheet" type="text/css">
-  <link href="styles.css" rel="stylesheet" type="text/css">
+  <link href="css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <form id="sudoku-form">
     <table id="sudoku-box" align="center">
       <tbody id="sudoku-box-body">
         <tr id="a">
-          <td id="a0">
+          <td id="a0" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a1">
+          <td id="a1" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a2">
+          <td id="a2" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a3">
+          <td id="a3" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a4">
+          <td id="a4" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a5">
+          <td id="a5" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a6">
+          <td id="a6" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a7">
+          <td id="a7" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="a8">
+          <td id="a8" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="b">
-          <td id="b0">
+          <td id="b0" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b1">
+          <td id="b1" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b2">
+          <td id="b2" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b3">
+          <td id="b3" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b4">
+          <td id="b4" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b5">
+          <td id="b5" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b6">
+          <td id="b6" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b7">
+          <td id="b7" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="b8">
+          <td id="b8" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="c">
-          <td id="c0">
+          <td id="c0" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c1">
+          <td id="c1" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c2">
+          <td id="c2" class="s0">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c3">
+          <td id="c3" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c4">
+          <td id="c4" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c5">
+          <td id="c5" class="s1">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c6">
+          <td id="c6" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c7">
+          <td id="c7" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="c8">
+          <td id="c8" class="s2">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="d">
-          <td id="d0">
+          <td id="d0" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d1">
+          <td id="d1" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d2">
+          <td id="d2" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d3">
+          <td id="d3" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d4">
+          <td id="d4" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d5">
+          <td id="d5" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d6">
+          <td id="d6" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d7">
+          <td id="d7" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="d8">
+          <td id="d8" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="e">
-          <td id="e0">
+          <td id="e0" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e1">
+          <td id="e1" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e2">
+          <td id="e2" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e3">
+          <td id="e3" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e4">
+          <td id="e4" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e5">
+          <td id="e5" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e6">
+          <td id="e6" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e7">
+          <td id="e7" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="e8">
+          <td id="e8" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="f">
-          <td id="f0">
+          <td id="f0" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f1">
+          <td id="f1" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f2">
+          <td id="f2" class="s3">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f3">
+          <td id="f3" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f4">
+          <td id="f4" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f5">
+          <td id="f5" class="s4">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f6">
+          <td id="f6" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f7">
+          <td id="f7" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="f8">
+          <td id="f8" class="s5">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="g">
-          <td id="g0">
+          <td id="g0" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g1">
+          <td id="g1" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g2">
+          <td id="g2" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g3">
+          <td id="g3" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g4">
+          <td id="g4" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g5">
+          <td id="g5" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g6">
+          <td id="g6" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g7">
+          <td id="g7" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="g8">
+          <td id="g8" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="h">
-          <td id="h0">
+          <td id="h0" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h1">
+          <td id="h1" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h2">
+          <td id="h2" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h3">
+          <td id="h3" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h4">
+          <td id="h4" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h5">
+          <td id="h5" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h6">
+          <td id="h6" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h7">
+          <td id="h7" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="h8">
+          <td id="h8" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
         <tr id="i">
-          <td id="i0">
+          <td id="i0" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i1">
+          <td id="i1" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i2">
+          <td id="i2" class="s6">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i3">
+          <td id="i3" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i4">
+          <td id="i4" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i5">
+          <td id="i5" class="s7">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i6">
+          <td id="i6" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i7">
+          <td id="i7" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
-          <td id="i8">
+          <td id="i8" class="s8">
             <input type="text" maxlength="1" size="2" onkeypress="return validateInput(this, event)">
           </td>
         </tr>
@@ -277,6 +277,7 @@
   <p id="hint" align="center">hint: press shift to toggle cell mode</p>
   <div id="bottom-menu" align="center">
     <button class="bottom-button" onclick="clearBoard()">clear</button>
+    <button class="bottom-button" onclick="checkBoard()">check</button>
   </div>
 </body>
 
@@ -300,6 +301,6 @@
   }
 </script>
 
-<script src="script.js"> </script>
+<script src="js/script.js"> </script>
 
 </html>
