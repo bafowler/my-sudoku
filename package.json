@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/bafowler/my-soduko#readme",
   "dependencies": {
-    "mongodb": "^3.0.10"
+    "express": "^4.16.3",
+    "mongodb": "^3.0.10",
+    "node-dev": "^3.1.3"
   }
 }
