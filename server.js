@@ -1,4 +1,5 @@
 var express = require("express");
+var games = require("./public/sudoku-games.json");
 var app = express();
 
 app.use(express.static("./public"));

@@ -3,6 +3,18 @@ const cells = document.querySelectorAll("#sudoku-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
 
+// load in the default easy game on page load
+window.onload = function (e) {
+    let gameRequest = new XMLHttpRequest();
+    gameRequest.open('GET', 'sudoku-games.json');
+    gameRequest.send();
+    gameRequest.onreadystatechange = function () {
+        if (gameRequest.readyState == 4) {
+            loadGame(JSON.parse(gameRequest.responseText)[0]);
+        }
+    }
+}
+
 // warn user before leaving page if the sudoku board contains user input
 window.addEventListener("beforeunload", function (e) {
     if (isEmpty()) {
@@ -37,6 +49,18 @@ document.body.onkeydown = function (e) {
 document.body.onclick = function (e) {
     if (selected) {
         selected.querySelector("input").focus();
+    }
+}
+
+// load in the sudoku game on the clearBoard
+function loadGame(game) {
+    for (let i = 0; i < game.cells.length; i++) {
+        var cellData = game.cells[i];
+        var cell = document.getElementById(cellData.id);
+        cell.classList.toggle("static");
+        var inputTag = cell.querySelector("input");
+        inputTag.setAttribute("readonly", true);
+        inputTag.setAttribute("value", cellData.value);
     }
 }
 
