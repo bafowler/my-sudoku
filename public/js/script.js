@@ -26,7 +26,7 @@ window.addEventListener("beforeunload", function (e) {
 
 // unfocus selected cell when user clicks outside of sudoku board
 window.onclick = function (e) {
-    if (e.target.tagName != "INPUT") {
+    if (e.target.tagName != "INPUT" && e.target.tagName != "TD") {
         if (selected) {
             selected.style.backgroundColor = "white";
             selected.querySelector("input").blur();
@@ -36,10 +36,11 @@ window.onclick = function (e) {
 }
 
 // switch between single/multiple mode for the selected cell's input
-// using shift key
+// using shift key, as long as the cell is non-static
 document.body.onkeydown = function (e) {
     if (e.keyCode == 16) {
-        if (selected) {
+        if (selected && !selected.classList.contains("static")) {
+            console.log(selected)
             changeCellState(selected, e)
         }
     }
