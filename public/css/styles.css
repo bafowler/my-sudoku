@@ -76,6 +76,13 @@ input {
     text-align: center;
 }
 
+#top-menu {
+    width: 482px;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+
 .bottom-button {
     font-size: 18px;
     background: inherit;
@@ -83,6 +90,13 @@ input {
     outline: none;
 }
 
-.bottom-button:hover {
+.top-button {
+    font-size: 18px;
+    background: inherit;
+    border: none;
+    outline: none;
+}
+
+.bottom-button:hover, .top-button:hover {
     text-decoration: underline;
 }

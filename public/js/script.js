@@ -2,17 +2,19 @@
 const cells = document.querySelectorAll("#sudoku-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
+// the index of the currently selected game
+var gameIndex = -1;
+// the currently selected difficulty level (default is 'easy', on page load)
+var gameDifficulty = "easy";
+// an array of all games included in the selected difficulty level
+var games = null;
 
-// load in the default easy game on page load
+// load in the default easy game (i.e. the easy game at index 0) on page load
 window.onload = function (e) {
-    let gameRequest = new XMLHttpRequest();
-    gameRequest.open('GET', 'sudoku-games.json');
-    gameRequest.send();
-    gameRequest.onreadystatechange = function () {
-        if (gameRequest.readyState == 4) {
-            loadGame(JSON.parse(gameRequest.responseText)[0]);
-        }
-    }
+    fetchGames("easy", function() {
+        gameIndex = 0;
+        loadGame(games[gameIndex]);
+    });
 }
 
 // warn user before leaving page if the sudoku board contains user input
@@ -40,8 +42,7 @@ window.onclick = function (e) {
 document.body.onkeydown = function (e) {
     if (e.keyCode == 16) {
         if (selected && !selected.classList.contains("static")) {
-            console.log(selected)
-            changeCellState(selected, e)
+            changeCellState(selected, e);
         }
     }
 }
@@ -53,7 +54,41 @@ document.body.onclick = function (e) {
     }
 }
 
-// load in the sudoku game on the clearBoard
+// check to see if the difficulty has been changed before loading in a new game
+function checkDifficulty(newGameDifficulty) {
+    // first check if the user wants to proceed with loading in a new game
+    if (!isEmpty()) {
+        if (!confirm("Are you sure you'd like to clear the board?")) {
+            return;
+        }
+    }
+
+    // if the user selects a new difficulty, fetch the games for that difficulty
+    // before loading the new game
+    if (newGameDifficulty != gameDifficulty) {
+        gameDifficulty = newGameDifficulty;
+        fetchGames(gameDifficulty, function() {
+            newGame();
+        })
+    // otherwise, just load in the new game
+    } else {
+        newGame();
+    }
+}
+
+// choose a new random game to load in
+function newGame() {
+    let newGameIndex = gameIndex;
+    // find a random index that is different than the current game's index
+    while (newGameIndex == gameIndex) {
+        newGameIndex = Math.floor((Math.random() * games.length));
+    }
+    gameIndex = newGameIndex;
+    resetBoard();
+    loadGame(games[gameIndex]);
+}
+
+// load in the sudoku game on the board
 function loadGame(game) {
     for (let i = 0; i < game.cells.length; i++) {
         var cellData = game.cells[i];
@@ -61,7 +96,22 @@ function loadGame(game) {
         cell.classList.toggle("static");
         var inputTag = cell.querySelector("input");
         inputTag.setAttribute("readonly", true);
-        inputTag.setAttribute("value", cellData.value);
+        inputTag.value = cellData.value;
+    }
+}
+
+// fetch the games of a certain difficulty, set the global var 'games', and
+// perform the callback function
+function fetchGames(difficulty, _callback) {
+    var gameFile = 'sudoku-games-' + difficulty + '.json';
+    let gameRequest = new XMLHttpRequest();
+    gameRequest.open('GET', gameFile);
+    gameRequest.send();
+    gameRequest.onreadystatechange = function () {
+        if (gameRequest.readyState == 4) {
+            games = JSON.parse(gameRequest.responseText);
+            _callback();
+        }
     }
 }
 
@@ -135,7 +185,7 @@ function select(current) {
 }
 
 // clear the sudoku board of all user input
-function clearBoard() {
+function clearBoardInput() {
     // only proceed if the user confirms
     if (!confirm("Are you sure you'd like to clear the board?")) {
         return;
@@ -148,6 +198,19 @@ function clearBoard() {
             cellInput.setAttribute("maxlength", 1);
             cellInput.value = "";
         }
+    }
+}
+
+// clear the sudoku board entirely, of the game and all user input and reset
+// all cells to non-static
+function resetBoard() {
+    for (var i = 0; i < cells.length; i++) {
+        let cellInput = cells[i].querySelector("input");
+        cells[i].classList.remove("static");
+        cellInput.classList.remove("multiple");
+        cellInput.removeAttribute("readonly");
+        cellInput.setAttribute("maxlength", 1);
+        cellInput.value = "";
     }
 }
 
