@@ -44,7 +44,10 @@ window.addEventListener("beforeunload", function (e) {
 window.onclick = function (e) {
     if (e.target.tagName != "INPUT" && e.target.tagName != "TD") {
         if (selected) {
-            selected.style.backgroundColor = "white";
+            // don't change colour of cell if it is red due to player error
+            if (!selected.style.backgroundColor == "#ff5e5e") {
+                selected.style.backgroundColor = "white";
+            }
             selected.querySelector("input").blur();
             selected = null;
         }
@@ -239,6 +242,20 @@ function isEmpty() {
     }
     return true;
 }
+
+function checkBoard() {
+    for (var i = 0; i < cells.length; i++) {
+        if (!cells[i].classList.contains("static")) {
+            var inputTag = cells[i].querySelector("input");
+            if (inputTag.value.length == 1 &&
+                inputTag.value != solvedGame[cells[i].id]) {
+                    cells[i].style.backgroundColor = "#ff5e5e";
+            }
+        }
+    }
+}
+
+
 
 function displaySolvedGame() {
     for (var i = 0; i < cells.length; i++) {
