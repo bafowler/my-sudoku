@@ -8,6 +8,20 @@ var gameIndex = -1;
 var gameDifficulty = "easy";
 // an array of all games included in the selected difficulty level
 var games = null;
+// the solution to the currently selected game
+var solvedGame = null;
+// constants for every sudoku game
+const rows = "abcdefghi";
+const cols = "012345678";
+const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
+                ["a3", "a4", "a5", "b3", "b4", "b5", "c3", "c4", "c5"],
+                ["a6", "a7", "a8", "b6", "b7", "b8", "c6", "c7", "c8"],
+                ["d0", "d1", "d2", "e0", "e1", "e2", "f0", "f1", "f2"],
+                ["d3", "d4", "d5", "e3", "e4", "e5", "f3", "f4", "f5"],
+                ["d6", "d7", "d8", "e6", "e7", "e8", "f6", "f7", "f8"],
+                ["g0", "g1", "g2", "h0", "h1", "h2", "i0", "i1", "i2"],
+                ["g3", "g4", "g5", "h3", "h4", "h5", "i3", "i4", "i5"],
+                ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
 
 // load in the default easy game (i.e. the easy game at index 0) on page load
 window.onload = function (e) {
@@ -90,6 +104,7 @@ function newGame() {
 
 // load in the sudoku game on the board
 function loadGame(game) {
+    solveCurrentGame();
     for (let i = 0; i < game.cells.length; i++) {
         var cellData = game.cells[i];
         var cell = document.getElementById(cellData.id);
@@ -223,6 +238,131 @@ function isEmpty() {
         }
     }
     return true;
+}
+
+function displaySolvedGame() {
+    for (var i = 0; i < cells.length; i++) {
+        if (!cells[i].classList.contains("static")) {
+            var inputTag = cells[i].querySelector("input");
+            inputTag.value = solvedGame[cells[i].id];
+        }
+    }
+}
+
+function solveCurrentGame() {
+    var game = {};
+    for (let row of rows) {
+        for (let col of cols) {
+            game[row + col] = "123456789";
+        }
+    }
+    for (let cell of games[gameIndex].cells) {
+        if (!assign(game, cell.id, cell.value.toString())) {
+            console.error("Couldn't assign value " + cell.value.toString() +
+            " to cell " + cell.id);
+        }
+    }
+    solvedGame = game;
+}
+
+function assign(game, id, value) {
+    otherValues = game[id].replace(value, "").split("");
+    if (otherValues.every(function(otherValue) {
+        return eliminate(game, id, otherValue);
+    })) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function eliminate(game, id, value) {
+    if (game[id].indexOf(value) == -1) {
+        return true;
+    }
+    game[id] = game[id].replace(value, "");
+
+    if (game[id].length == 0) {
+        return false;
+    } else if (game[id].length == 1) {
+        let otherValue = game[id];
+        let peers = getPeers(game, id);
+        if (!peers.every(function(peer){
+            return eliminate(game, peer, otherValue);
+        })) {
+            return false;
+        }
+    }
+
+    let units = getUnits(game, id);
+    for (let unit of units) {
+        let places = [];
+        for (let cellId of unit) {
+            if (game[cellId].indexOf(value) != -1) {
+                places.push(cellId);
+            }
+        }
+        if (places.length == 0) {
+            return false;
+        } else if (places.length == 1) {
+            if (!assign(game, places[0], value)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+// return a list of the ids of all peers for the cell with the given id
+// a 'peer' is a cell that shares a row, column, or square with another cell
+function getPeers(game, id) {
+    let peers = [];
+    // get all peers of the same row
+    for (let col of cols) {
+        if (id[1] != col) {
+            peers.push(id[0] + col);
+        }
+    }
+    // get all peers of the same column
+    for (let row of rows) {
+        if (id[0] != row) {
+            peers.push(row + id[1]);
+        }
+    }
+    // get all peers of the same square, if they aren't in the same row/column
+    for (let arr of squares) {
+        if (arr.includes(id)) {
+            for (let cellId of arr) {
+                if (cellId != id && cellId[0] != id[0] && cellId[1] != id[1]) {
+                    peers.push(cellId);
+                }
+            }
+            break;
+        }
+    }
+    return peers;
+}
+
+function getUnits(game, id) {
+    let units = [[], [], []];
+    // get unit[0], the row
+    for (let col of cols) {
+        units[0].push(id[0] + col);
+    }
+    // get unit[1], the column
+    for (let row of rows) {
+        units[1].push(row + id[1]);
+    }
+    // get unit[2], the square
+    for (let arr of squares) {
+        if (arr.includes(id)) {
+            for (let cellId of arr) {
+                units[2].push(cellId);
+            }
+            break;
+        }
+    }
+    return units;
 }
 
 // add behaviours to all non-static cells
