@@ -180,6 +180,9 @@ function changeCellState(current, event) {
 
 // shade cell current a light green
 function highlight(current) {
+    if (current.classList.contains("static")) {
+        return;
+    }
     if (current != selected) {
         current.style.backgroundColor = "#D4EFDF";
     }
@@ -195,6 +198,9 @@ function unhighlight(current) {
 // shade cell current a darker green (only one cell should be this color at
 // a time)
 function select(current) {
+    if (current.classList.contains("static")) {
+        return;
+    }
     if (selected) {
         selected.style.backgroundColor = "white";
     }
