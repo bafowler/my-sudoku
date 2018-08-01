@@ -288,7 +288,55 @@ function solveCurrentGame() {
             " to cell " + cell.id);
         }
     }
-    solvedGame = game;
+
+    solvedGame = search(game);
+}
+
+function search(game) {
+    if (!game) {
+        return false;
+    }
+
+    let isSolved = true;
+    for (let cellId in game) {
+        if (game[cellId].length != 1) {
+            isSolved = false;
+            break;
+        }
+    }
+    if (isSolved) {
+        return game;
+    }
+
+    let minLengthCellId = null;
+    let minLength = 10;
+    for (let cellId in game) {
+        if (game[cellId].length > 1) {
+            if (!minLengthCellId ||
+                game[cellId].length < minLength) {
+                minLength = game[cellId].length;
+                minLengthCellId = cellId;
+            }
+        }
+    }
+
+    for (let value of game[minLengthCellId]) {
+        // create a copy of the game
+        let gameCopy = {};
+        Object.keys(game).forEach(function(cellId) {
+            gameCopy[cellId] = game[cellId];
+        })
+        // assign a random value and see if it solves the game
+        if (!assign(gameCopy, minLengthCellId, value)) {
+            continue;
+        }
+        gameCopy = search(gameCopy);
+        if (gameCopy) {
+            return gameCopy;
+        }
+    }
+
+    return false;
 }
 
 function assign(game, id, value) {

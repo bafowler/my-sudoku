@@ -78,19 +78,13 @@ input {
 
 #top-menu {
     width: 482px;
-    height: 30px;
+    height: 60px;
     margin: 0 auto;
     text-align: center;
+    display: flex;
 }
 
-.bottom-button {
-    font-size: 18px;
-    background: inherit;
-    border: none;
-    outline: none;
-}
-
-.top-button {
+.bottom-button, .top-button {
     font-size: 18px;
     background: inherit;
     border: none;
