@@ -24,11 +24,18 @@ const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
                 ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
 
 // load in the default easy game (i.e. the easy game at index 0) on page load
+// and add in highlighting behaviours for all cells
 window.onload = function (e) {
     fetchGames("easy", function() {
         gameIndex = 0;
         loadGame(games[gameIndex]);
     });
+
+    for (var i = 0; i < cells.length; i++) {
+        cells[i].addEventListener('mouseover', function() { highlight(this);});
+        cells[i].addEventListener('mouseout', function() { unhighlight(this);});
+        cells[i].addEventListener('click', function() { select(this);});
+    }
 }
 
 // warn user before leaving page if the sudoku board contains user input
@@ -40,14 +47,13 @@ window.addEventListener("beforeunload", function (e) {
     return " ";
 })
 
-// unfocus selected cell when user clicks outside of sudoku board
+// unfocus selected cell when user clicks outside of sudoku board, and not on
+// a button
 window.onclick = function (e) {
-    if (e.target.tagName != "INPUT" && e.target.tagName != "TD") {
+    if (e.target.tagName != "INPUT" && e.target.tagName != "TD" &&
+        e.target.tagName != "BUTTON") {
         if (selected) {
-            // don't change colour of cell if it is red due to player error
-            if (!selected.style.backgroundColor == "#ff5e5e") {
-                selected.style.backgroundColor = "white";
-            }
+            selected.style.backgroundColor = "white";
             selected.querySelector("input").blur();
             selected = null;
         }
@@ -108,13 +114,12 @@ function newGame() {
 // load in the sudoku game on the board
 function loadGame(game) {
     solveCurrentGame();
-    for (let i = 0; i < game.cells.length; i++) {
-        var cellData = game.cells[i];
-        var cell = document.getElementById(cellData.id);
+    for (let cellId in game) {
+        var cell = document.getElementById(cellId);
         cell.classList.toggle("static");
         var inputTag = cell.querySelector("input");
         inputTag.setAttribute("readonly", true);
-        inputTag.value = cellData.value;
+        inputTag.value = game[cellId];
     }
 }
 
@@ -178,7 +183,7 @@ function changeCellState(current, event) {
     }
 }
 
-// shade cell current a light green
+// shade cell current a light green, iff it is non-static
 function highlight(current) {
     if (current.classList.contains("static")) {
         return;
@@ -196,7 +201,7 @@ function unhighlight(current) {
 }
 
 // shade cell current a darker green (only one cell should be this color at
-// a time)
+// a time), iff it is non-static
 function select(current) {
     if (current.classList.contains("static")) {
         return;
@@ -261,8 +266,6 @@ function checkBoard() {
     }
 }
 
-
-
 function displaySolvedGame() {
     for (var i = 0; i < cells.length; i++) {
         if (!cells[i].classList.contains("static")) {
@@ -279,8 +282,8 @@ function solveCurrentGame() {
             game[row + col] = "123456789";
         }
     }
-    for (let cell of games[gameIndex].cells) {
-        if (!assign(game, cell.id, cell.value.toString())) {
+    for (let cellId in games[gameIndex]) {
+        if (!assign(game, cellId, games[gameIndex][cellId])) {
             console.error("Couldn't assign value " + cell.value.toString() +
             " to cell " + cell.id);
         }
@@ -386,13 +389,4 @@ function getUnits(game, id) {
         }
     }
     return units;
-}
-
-// add behaviours to all non-static cells
-for (var i = 0; i < cells.length; i++) {
-    if (!cells[i].classList.contains("static")) {
-        cells[i].addEventListener('mouseover', function() { highlight(this) });
-        cells[i].addEventListener('mouseout', function() { unhighlight(this) });
-        cells[i].addEventListener('click', function() { select(this)})
-    }
 }
