@@ -10,18 +10,6 @@ var gameDifficulty = "easy";
 var games = null;
 // the solution to the currently selected game
 var solvedGame = null;
-// constants for every sudoku game
-const rows = "abcdefghi";
-const cols = "012345678";
-const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
-                ["a3", "a4", "a5", "b3", "b4", "b5", "c3", "c4", "c5"],
-                ["a6", "a7", "a8", "b6", "b7", "b8", "c6", "c7", "c8"],
-                ["d0", "d1", "d2", "e0", "e1", "e2", "f0", "f1", "f2"],
-                ["d3", "d4", "d5", "e3", "e4", "e5", "f3", "f4", "f5"],
-                ["d6", "d7", "d8", "e6", "e7", "e8", "f6", "f7", "f8"],
-                ["g0", "g1", "g2", "h0", "h1", "h2", "i0", "i1", "i2"],
-                ["g3", "g4", "g5", "h3", "h4", "h5", "i3", "i4", "i5"],
-                ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
 
 /*
  * load in the default easy game (the easy game at index 0) on page load
@@ -131,7 +119,7 @@ function newGame() {
  * Load the current game onto the board.
  */
 function loadGame(game) {
-    solvedGame = solveCurrentGame();
+    solvedGame = solveCurrentGame(games[gameIndex]);
     for (let cellId in game) {
         var cell = document.getElementById(cellId);
         cell.classList.toggle("static");
@@ -295,17 +283,21 @@ function isEmpty() {
 }
 
 /*
- * Check the solution against what the user has inputted on the board. Change
- * the background colour of each incorrect cell found to red.
+ * Check the solution against what the user has inputted on the board. Briefly
+ * change the background colour of each correct cells to green and incorrect
+ * cells to red.
  */
 function checkBoard() {
     for (var i = 0; i < cells.length; i++) {
         if (!cells[i].classList.contains("static")) {
             var inputTag = cells[i].querySelector("input");
             if (!inputTag.classList.contains("multiple") &&
-                inputTag.value.length == 1 &&
-                inputTag.value != solvedGame[cells[i].id]) {
-                    cells[i].style.backgroundColor = "#ff5e5e";
+                inputTag.value.length == 1 ) {
+                if (inputTag.value == solvedGame[cells[i].id]) {
+                    colourShift(cells[i], 125, 65);
+                } else {
+                    colourShift(cells[i], 359, 65);
+                }
             }
         }
     }
@@ -327,4 +319,23 @@ function displaySolvedGame() {
             inputTag.value = solvedGame[cells[i].id];
         }
     }
+}
+
+/*
+ * Shift the background colour of element from white (100% lightness) to the
+ * hue given with lightTarget lightness, then back to white.
+ */
+function colourShift(element, hue, lightTarget) {
+    let towardsWhite = false;   // the direction of the colour shift
+    let lightness = 100;        // start with white
+    element.style.backgroundColor = 'hsl('+hue+','+100+'%,'+lightness+'%)';
+    let interval = setInterval(function() {
+        if (lightness <= lightTarget) {
+            towardsWhite = true;    // switch direction of shift
+        } else if (towardsWhite && lightness >= 100) {
+            clearInterval(interval);    // back to white; colour shift over
+        }
+        towardsWhite ? lightness++ : lightness--;
+        element.style.backgroundColor = 'hsl('+hue+','+100+'%,'+lightness+'%)';
+    }, 14);
 }

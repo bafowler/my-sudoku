@@ -1,11 +1,29 @@
 /*
+ * Adapted from Peter Norvig's paper "Solving Every Sudoku Puzzle", which can
+ * be found at http://norvig.com/sudoku.html
+ */
+
+ // constants for every sudoku game
+ const rows = "abcdefghi";
+ const cols = "012345678";
+ const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
+                 ["a3", "a4", "a5", "b3", "b4", "b5", "c3", "c4", "c5"],
+                 ["a6", "a7", "a8", "b6", "b7", "b8", "c6", "c7", "c8"],
+                 ["d0", "d1", "d2", "e0", "e1", "e2", "f0", "f1", "f2"],
+                 ["d3", "d4", "d5", "e3", "e4", "e5", "f3", "f4", "f5"],
+                 ["d6", "d7", "d8", "e6", "e7", "e8", "f6", "f7", "f8"],
+                 ["g0", "g1", "g2", "h0", "h1", "h2", "i0", "i1", "i2"],
+                 ["g3", "g4", "g5", "h3", "h4", "h5", "i3", "i4", "i5"],
+                 ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
+
+/*
  * Create a sudoku game, which is a dictionary that maps cell id to possible
  * cell values. The game will start out with each cell having every impossible
  * value (123456789). Then, assign each "static" cell given by the current game
  * its appropriate value. Search for the solution using guess-and-check. Return
  * the solved game, null if no solution is found.
  */
-function solveCurrentGame() {
+function solveCurrentGame(currentGame) {
     var game = {};
     for (let row of rows) {
         for (let col of cols) {
@@ -13,16 +31,15 @@ function solveCurrentGame() {
         }
     }
     for (let cellId in games[gameIndex]) {
-        if (!assign(game, cellId, games[gameIndex][cellId])) {
+        if (!assign(game, cellId, currentGame[cellId])) {
             console.error("Couldn't assign value " + games[gameIndex][cellId] +
             " to cell " + cellId);
         }
     }
-    let solvedGame;
-    if (!(solvedGame = search(game))) {
-        solvedGame = null;
+    if (!(game = search(game))) {
+        game = null;
     }
-    return solvedGame;
+    return game;
 }
 /*
  * Return true iff the game is solved (i.e. each cell has only one possible
