@@ -10,12 +10,24 @@ var gameDifficulty = "easy";
 var games = null;
 // the solution to the currently selected game
 var solvedGame = null;
+// constants for every sudoku game
+const rows = "abcdefghi";
+const cols = "012345678";
+const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
+                ["a3", "a4", "a5", "b3", "b4", "b5", "c3", "c4", "c5"],
+                ["a6", "a7", "a8", "b6", "b7", "b8", "c6", "c7", "c8"],
+                ["d0", "d1", "d2", "e0", "e1", "e2", "f0", "f1", "f2"],
+                ["d3", "d4", "d5", "e3", "e4", "e5", "f3", "f4", "f5"],
+                ["d6", "d7", "d8", "e6", "e7", "e8", "f6", "f7", "f8"],
+                ["g0", "g1", "g2", "h0", "h1", "h2", "i0", "i1", "i2"],
+                ["g3", "g4", "g5", "h3", "h4", "h5", "i3", "i4", "i5"],
+                ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
 
 /*
  * load in the default easy game (the easy game at index 0) on page load
  * and add in highlighting behaviours for all cells.
  */
-window.onload = function (e) {
+window.onload = function(e) {
     fetchGames("easy", function() {
         gameIndex = 0;
         loadGame(games[gameIndex]);
@@ -31,7 +43,7 @@ window.onload = function (e) {
 /*
  * Warn user before leaving page if the sudoku board contains user input.
  */
-window.addEventListener("beforeunload", function (e) {
+window.addEventListener("beforeunload", function(e) {
     if (isEmpty()) {
         return undefined;
     }
@@ -42,7 +54,7 @@ window.addEventListener("beforeunload", function (e) {
 /*
  * Unfocus selected cell when user clicks outside of sudoku board.
  */
-window.onclick = function (e) {
+window.onclick = function(e) {
     if (e.target.tagName != "INPUT" && e.target.tagName != "TD") {
         if (selected) {
             // don't change the colour of the cell if the user "checks",
@@ -57,23 +69,72 @@ window.onclick = function (e) {
 }
 
 /*
- * Switch between single/multiple mode for the selected cell's input
- * using shift key, as long as the cell is non-static.
+ * Handle keyboard input.
  */
-document.body.onkeydown = function (e) {
+document.body.onkeydown = function(e) {
+    // switch between single/multiple mode for the selected cell's input
+    // using shift key, as long as the cell is non-static
     if (e.keyCode == 16) {
         if (selected && !selected.classList.contains("static")) {
             changeCellState(selected, e);
         }
+    // change the selected cell if the user selects an arrow key
+    } else if (e.keyCode >= 37 && e.keyCode <= 40 && selected) {
+        switch(e.keyCode) {
+            case 37:
+                moveCellByKey(selected.id, "left");
+                break;
+            case 38:
+                moveCellByKey(selected.id, "up");
+                break;
+            case 39:
+                moveCellByKey(selected.id, "right");
+                break;
+            case 40:
+                moveCellByKey(selected.id, "down");
+                break;
+            default:
+                return;
+        }
     }
 }
 
-/*
- * Ensure correct input is focused when its container cell is clicked.
- */
-document.body.onclick = function (e) {
-    if (selected) {
-        selected.querySelector("input").focus();
+function moveCellByKey(startCellId, direction) {
+    if (!startCellId) {
+        return;
+    }
+    let newCellId = null;
+    if (direction == "left") {
+        if (startCellId[1] == "0") {
+            return;
+        }
+        newCellId = startCellId[0] + (--startCellId[1]).toString();
+    } else if (direction == "up") {
+        if (startCellId[0] == "a") {
+            return;
+        }
+        let newCharCode = startCellId[0].charCodeAt() - 1;
+        newCellId = String.fromCharCode(newCharCode) + startCellId[1];
+    } else if (direction == "right") {
+        if (startCellId[1] == "9") {
+            return;
+        }
+        newCellId = startCellId[0] + (++startCellId[1]).toString();
+    } else if (direction == "down") {
+        if (startCellId[0] == "i") {
+            return;
+        }
+        let newCharCode = startCellId[0].charCodeAt() + 1;
+        newCellId = String.fromCharCode(newCharCode) + startCellId[1];
+    }
+
+    let newCell = document.querySelector("#"+newCellId);
+    if (newCell) {
+        if (newCell.classList.contains("static")) {
+            moveCellByKey(newCellId, direction);
+        } else {
+            select(newCell);
+        }
     }
 }
 
@@ -221,7 +282,7 @@ function unhighlight(current) {
 /*
  * Shade current cell a darker green (only one cell should be this color at
  * a time), iff it is non-static, and remove the dark green from the previously
- * selected cell.
+ * selected cell. Focus the input of the selected cell.
  */
 function select(current) {
     if (current.classList.contains("static")) {
@@ -232,6 +293,14 @@ function select(current) {
     }
     selected = current;
     selected.style.backgroundColor = "#A9DFBF";
+    let inputTag = selected.querySelector("input");
+    // ensure cursor is at the end of input
+    setTimeout(function moveCursorToEnd() {
+        let val = inputTag.value;
+        inputTag.value = null;
+        inputTag.value = val;
+        inputTag.focus();
+    }, 0);
 }
 
 /*
