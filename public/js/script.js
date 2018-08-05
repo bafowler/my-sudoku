@@ -2,6 +2,8 @@
 const cells = document.querySelectorAll("#sudoku-box td");
 // the cell currently selected (clicked) by the user
 var selected = null;
+// which number's cells are currently highlighted; -1 if none
+var numHighlighted = -1;
 // the index of the currently selected game
 var gameIndex = -1;
 // the currently selected difficulty level (default is 'easy', on page load)
@@ -24,15 +26,15 @@ const squares = [ ["a0", "a1", "a2", "b0", "b1", "b2", "c0", "c1", "c2"],
                 ["g6", "g7", "g8", "h6", "h7", "h8", "i6", "i7", "i8"] ];
 
 /*
- * load in the default easy game (the easy game at index 0) on page load
- * and add in highlighting behaviours for all cells.
+ * Handle page load behaviour.
  */
 window.onload = function(e) {
+    // Load easy game at index 0
     fetchGames("easy", function() {
         gameIndex = 0;
         loadGame(games[gameIndex]);
     });
-
+    // Add colour-changing behaviours to all cells
     for (var i = 0; i < cells.length; i++) {
         cells[i].addEventListener('mouseover', function() { highlight(this);});
         cells[i].addEventListener('mouseout', function() { unhighlight(this);});
@@ -64,6 +66,11 @@ window.onclick = function(e) {
             }
             selected.querySelector("input").blur();
             selected = null;
+            if (numHighlighted != -1) {
+            // all cells of a certain number are highlighted; unhighlight them
+                highlightAll("white");
+                numHighlighted = -1;
+            }
         }
     }
 }
@@ -80,6 +87,7 @@ document.body.onkeydown = function(e) {
         }
     // change the selected cell if the user selects an arrow key
     } else if (e.keyCode >= 37 && e.keyCode <= 40 && selected) {
+        e.preventDefault();
         switch(e.keyCode) {
             case 37:
                 moveCellByKey(selected.id, "left");
@@ -96,13 +104,22 @@ document.body.onkeydown = function(e) {
             default:
                 return;
         }
+    // if backspace removes numHighlighted from selected cell, unhighlight that
+    // number on the board
+    } else if (e.keyCode == 8) {
+        if (selected.querySelector("input").value == numHighlighted &&
+            !selected.classList.contains("static")) {
+            highlightAll("white");
+            numHighlighted = -1;
+        }
     }
 }
 
+/*
+ * Given a direction and a starting cell id, move to the correct cell.
+ * Return if the move is invalid (i.e. leads to an new cell id that DNE).
+ */
 function moveCellByKey(startCellId, direction) {
-    if (!startCellId) {
-        return;
-    }
     let newCellId = null;
     if (direction == "left") {
         if (startCellId[1] == "0") {
@@ -130,11 +147,7 @@ function moveCellByKey(startCellId, direction) {
 
     let newCell = document.querySelector("#"+newCellId);
     if (newCell) {
-        if (newCell.classList.contains("static")) {
-            moveCellByKey(newCellId, direction);
-        } else {
-            select(newCell);
-        }
+        select(newCell);
     }
 }
 
@@ -238,6 +251,20 @@ function changeCellValue(current, char) {
         current.value = current.value.slice(0, -1);
         current.value += char;
     }
+    // If applicable, highlight all cells with value 'char'
+    setTimeout(function() {
+        if (current.value.length == 1 &&
+            !current.classList.contains("multiple")) {
+            if (numHighlighted != -1) {
+                // all cells of a certain number are highlighted; unhighlight them
+                highlightAll("white");
+                numHighlighted = -1;
+            }
+            // highlight all cells of this number
+            numHighlighted = char;
+            highlightAll("#D4EFDF");
+        }
+    }, 0);
 }
 
 /*
@@ -249,12 +276,24 @@ function changeCellState(current, event) {
     if (current.classList.contains("multiple")) {
         current.classList.remove("multiple");
         current.setAttribute("maxlength", 1);
+        // Cut off all extra digits from the end
         if (current.value.length > 1) {
             current.value = current.value.slice(0, -(current.value.length - 1));
         }
+        // If applicable, highlight all cells with current's value
+        if (current.value.length == 1) {
+            numHighlighted = current.value;
+            highlightAll("#D4EFDF");
+        }
+
     } else {
         current.classList.add("multiple");
         current.setAttribute("maxlength", 4);
+        // Unhighlight all cells with current's value
+        if (numHighlighted != -1) {
+            highlightAll("white");
+            numHighlighted = -1;
+        }
     }
 }
 
@@ -274,25 +313,50 @@ function highlight(current) {
  * Shade current cell white.
  */
 function unhighlight(current) {
-    if (current != selected) {
+    if (current != selected &&
+        (current.querySelector("input").value != numHighlighted ||
+         current.querySelector("input").classList.contains("multiple"))) {
         current.style.backgroundColor = "white";
+    }
+}
+
+/*
+ * Highlight all cells in 'single' mode which have a value equal to the
+ * global variable numHighlighted, but not the selected cell.
+ */
+function highlightAll(colour) {
+    for (var i = 0; i < cells.length; i++) {
+        if (cells[i].querySelector("input").value == numHighlighted &&
+            !cells[i].querySelector("input").classList.contains("multiple")) {
+            if (cells[i] != selected) {
+                cells[i].style.backgroundColor = colour;
+            }
+        }
     }
 }
 
 /*
  * Shade current cell a darker green (only one cell should be this color at
  * a time), iff it is non-static, and remove the dark green from the previously
- * selected cell. Focus the input of the selected cell.
+ * selected cell. Focus the input of the selected cell. If current cell has one
+ * value and is not in 'multiple' mode, highlight all cells with the same number
+ * on the board.
  */
 function select(current) {
-    if (current.classList.contains("static")) {
-        return;
-    }
     if (selected) {
         selected.style.backgroundColor = "white";
     }
+    if (numHighlighted != -1) {
+        // all cells of a certain number are highlighted; unhighlight them
+        highlightAll("white");
+        numHighlighted = -1;
+    }
     selected = current;
-    selected.style.backgroundColor = "#A9DFBF";
+    if (current.classList.contains("static")) {
+        selected.style.backgroundColor = "#D4EFDF";
+    } else {
+        selected.style.backgroundColor = "#A9DFBF";
+    }
     let inputTag = selected.querySelector("input");
     // ensure cursor is at the end of input
     setTimeout(function moveCursorToEnd() {
@@ -301,6 +365,13 @@ function select(current) {
         inputTag.value = val;
         inputTag.focus();
     }, 0);
+
+    if (current.querySelector("input").value.length == 1 &&
+        !current.querySelector("input").classList.contains("multiple")) {
+        // highlight all cells of this number
+        numHighlighted = current.querySelector("input").value;
+        highlightAll("#D4EFDF");
+    }
 }
 
 /*
@@ -320,6 +391,12 @@ function clearBoardInput() {
             cellInput.setAttribute("maxlength", 1);
             cellInput.value = "";
         }
+    }
+
+    if (numHighlighted != -1) {
+        // all cells of a certain number are highlighted; unhighlight them
+        highlightAll("white");
+        numHighlighted = -1;
     }
 }
 
@@ -357,6 +434,11 @@ function isEmpty() {
  * cells to red.
  */
 function checkBoard() {
+    if (numHighlighted != -1) {
+        // all cells of a certain number are highlighted; unhighlight them
+        highlightAll("white");
+        numHighlighted = -1;
+    }
     for (var i = 0; i < cells.length; i++) {
         if (!cells[i].classList.contains("static")) {
             var inputTag = cells[i].querySelector("input");
@@ -380,6 +462,12 @@ function displaySolvedGame() {
     if (!isEmpty() && !confirm("Are you sure you'd like to solve the game? " +
     "This will erase your progress.")) {
         return;
+    }
+
+    if (numHighlighted != -1) {
+        // all cells of a certain number are highlighted; unhighlight them
+        highlightAll("white");
+        numHighlighted = -1;
     }
 
     for (var i = 0; i < cells.length; i++) {
